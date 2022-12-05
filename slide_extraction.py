@@ -1,4 +1,6 @@
-import record_graph_construction.imagehash_jax.imagehash_jax as imagehash_jax
+import sys
+sys.path.append('./record_graph_construction/imagehash_jax')
+import imagehash_jax
 import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
