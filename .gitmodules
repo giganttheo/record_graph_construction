@@ -1,0 +1,3 @@
+[submodule "imagehash_jax"]
+	path = imagehash_jax
+	url = https://github.com/giganttheo/imagehash_jax
