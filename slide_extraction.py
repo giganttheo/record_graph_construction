@@ -1,4 +1,4 @@
-import image_hash.imagehash_jax as imagehash_jax
+import imagehash_jax.imagehash_jax as imagehash_jax
 import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -147,3 +147,6 @@ def extract_all_slides():
                     f.write(json.dumps(slideshow)) 
             except:
                 err_slides.append(vid_path)
+
+if __name__ == "__main__":
+    extract_all_slides()

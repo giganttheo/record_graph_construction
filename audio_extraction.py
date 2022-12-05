@@ -25,3 +25,7 @@ def extract_all_audios():
                 vid_2_flac(vid_path, aud_path)
             except:
                 err.append((vid_path, aud_path))
+
+
+if __name__ == "__main__":
+    extract_all_audios()
