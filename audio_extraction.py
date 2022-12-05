@@ -2,12 +2,13 @@ import os
 from tqdm.notebook import tqdm
 import librosa
 import soundfile as sf
+from utils import get_params
 
-BATCH_SIZE = 64
-DOWNSAMPLE = 12
-SOURCE_PATH = "../videos"
-FOLDER_PATH = "../results_1020"
-IMG_FOLDER_PATH = FOLDER_PATH + "/keyframes"
+
+extraction_params = get_params("./record_graph_construction/extraction_params.json")
+SOURCE_PATH = extraction_params["source_path"]
+FOLDER_PATH = extraction_params["folder_path"]
+IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
 def vid_2_flac(vid_path, aud_path):
     # load the audio from the video, resample to 16kHz and write to an flac audiofile

@@ -1,4 +1,4 @@
-import imagehash_jax
+import imagehash_jax.imagehash_jax as imagehash_jax
 import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,12 +10,14 @@ import jax
 import os
 import json
 from tqdm import tqdm
+from utils import get_params
 
-BATCH_SIZE = 64
-DOWNSAMPLE = 12
-SOURCE_PATH = "../videos"
-FOLDER_PATH = "../results_1020"
-IMG_FOLDER_PATH = FOLDER_PATH + "/keyframes"
+extraction_params = get_params("./record_graph_construction/extraction_params.json")
+BATCH_SIZE = extraction_params["batch_size"]
+DOWNSAMPLE = extraction_params["downsampling"]
+SOURCE_PATH = extraction_params["source_path"]
+FOLDER_PATH = extraction_params["folder_path"]
+IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
 @jax.jit
 @jax.vmap
