@@ -2,7 +2,7 @@ import os
 from tqdm.notebook import tqdm
 import librosa
 import soundfile as sf
-from utils import get_params
+from record_graph_construction.utils import get_params
 
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
