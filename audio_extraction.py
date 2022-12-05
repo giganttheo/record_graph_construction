@@ -5,8 +5,8 @@ import soundfile as sf
 
 BATCH_SIZE = 64
 DOWNSAMPLE = 12
-SOURCE_PATH = "./videos"
-FOLDER_PATH = "./results_1020"
+SOURCE_PATH = "../videos"
+FOLDER_PATH = "../results_1020"
 IMG_FOLDER_PATH = FOLDER_PATH + "/keyframes"
 
 def vid_2_flac(vid_path, aud_path):
