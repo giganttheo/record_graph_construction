@@ -2,7 +2,7 @@ import os
 from tqdm.notebook import tqdm
 import librosa
 import soundfile as sf
-from record_graph_construction.utils import get_params
+from utils import get_params
 import warnings
 
 
