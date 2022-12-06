@@ -2,10 +2,10 @@ import os
 import json
 from tqdm import tqdm
 
-from record_graph_construction.audio_extraction import vid_2_flac
-from record_graph_construction.slide_extraction import compute_batch_hashes, compute_threshold, get_slides
-from record_graph_construction.transcript_extraction import transcribe
-from record_graph_construction.utils import get_params
+from audio_extraction import vid_2_flac
+from slide_extraction import compute_batch_hashes, compute_threshold, get_slides
+from transcript_extraction import transcribe
+from utils import get_params
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
 SOURCE_PATH = extraction_params["source_path"]
@@ -70,3 +70,6 @@ def process_all_videos(verbose=True):
     pbar = tqdm(sorted(os.listdir(SOURCE_PATH)))
     for vid_file in pbar:
         err_audio, err_slides, err_transcription = process_video(vid_file, pbar, verbose)
+
+if __name__ == "__main__":
+    process_all_videos()
