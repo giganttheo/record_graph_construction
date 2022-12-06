@@ -5,7 +5,6 @@ import soundfile as sf
 from utils import get_params
 import warnings
 
-
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
 SOURCE_PATH = extraction_params["source_path"]
 FOLDER_PATH = extraction_params["folder_path"]

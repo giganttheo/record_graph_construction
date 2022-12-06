@@ -2,9 +2,7 @@ from tqdm import tqdm
 import json
 import os
 
-from file_check import check_folder
 from process_video import process_video
-
 
 if __name__ == "__main__":
     with open("./record_graph_construction/dl_status.json", "r") as f:
