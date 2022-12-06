@@ -26,6 +26,7 @@ if __name__ == "__main__":
     for i in tqdm(range(len(dataset))):
         if check_license(dataset, i):
             url_vid = dataset[i]["url_vid"]
-            dl_status[url_vid] = check_folder(url_vid.split("/")[-1], SOURCE_PATH)
+            if url_vid is not None:
+                dl_status[url_vid] = check_folder(url_vid.split("/")[-1], SOURCE_PATH)
     with open("dl_status.json", "w") as f:
         json.dump(dl_status, f)
