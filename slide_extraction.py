@@ -142,15 +142,15 @@ def extract_all_slides():
         vid_path = f'{SOURCE_PATH}/{vid_file}'
         path = f'{FOLDER_PATH}/metadata/{".".join(vid_file.split(".")[:-1])}_slideshow.json'
         if path.split("/")[-1] not in os.listdir(f"{FOLDER_PATH}/metadata/"):
-            try:
-                hashes = compute_batch_hashes(vid_path)
-                # plot_distance_per_patch(hashes)
-                threshold = compute_threshold(hashes)
-                slideshow = get_slides(vid_path, hashes, threshold)
-                with open(path,"w") as f:
-                    f.write(json.dumps(slideshow)) 
-            except:
-                err_slides.append(vid_path)
+            #try:
+            hashes = compute_batch_hashes(vid_path)
+            # plot_distance_per_patch(hashes)
+            threshold = compute_threshold(hashes)
+            slideshow = get_slides(vid_path, hashes, threshold)
+            with open(path,"w") as f:
+                f.write(json.dumps(slideshow)) 
+            # except:
+            #     err_slides.append(vid_path)
     return err_slides
 
 if __name__ == "__main__":
