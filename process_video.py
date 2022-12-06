@@ -14,20 +14,22 @@ IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
 # Extract video
 
-def process_video(vid_file):
+def process_video(vid_file, pbar, verbose=True):
     """
     process the video by
-      * extracting audio to a wav file (saved @ " {SOURCE_PATH}/audio/{video_name}.flac)
+      * extracting audio to a flac file (saved @ " {SOURCE_PATH}/audio/{video_name}.flac)
       * extracting the slides (to jpg files and metadata
         with timestamps @ {SOURCE_PATH}/metadata/{video_name}_slideshow.json)
-      * extracting the trancript from the wav file (saved @ {SOURCE_PATH}/transcripts/{video_name}.json)
+      * extracting the trancript from the flac file (saved @ {SOURCE_PATH}/transcripts/{video_name}.json)
 
     """
     err_audio = []
     err_slides = []
     err_transcription = []
     vid_path = f'{SOURCE_PATH}/{vid_file}'
-    #extract audio to wav file
+    #extract audio to flac file
+    if verbose:
+        pbar.set_description("Extracting audio to flac file")
     aud_path = f'{FOLDER_PATH}/audio/{".".join(vid_file.split(".")[:-1])}.flac'
     if aud_path.split("/")[-1] not in os.listdir(f"{FOLDER_PATH}/audio/"):
         print(aud_path.split("/")[-1])
@@ -36,6 +38,8 @@ def process_video(vid_file):
         except:
             err_audio.append((vid_path, aud_path))
     #extract slides
+    if verbose:
+        pbar.set_description("Extracting slides")
     path = f'{FOLDER_PATH}/metadata/{".".join(vid_file.split(".")[:-1])}_slideshow.json'
     if path.split("/")[-1] not in os.listdir(f"{FOLDER_PATH}/metadata/"):
         try:
@@ -48,6 +52,8 @@ def process_video(vid_file):
         except:
             err_slides.append(vid_path)
     #extract transcripts
+    if verbose:
+        pbar.set_description("Generating transcripts")
     transc_path = f'{FOLDER_PATH}/transcripts/{".".join(vid_file.split(".")[:-1])}.json'
     if os.path.isfile(aud_path) and not os.path.isfile(transc_path):
         try:
@@ -60,6 +66,7 @@ def process_video(vid_file):
         pass
     return err_audio, err_slides, err_transcription
 
-def process_all_videos():
-    for vid_file in tqdm(sorted(os.listdir(SOURCE_PATH))):
-        err_audio, err_slides, err_transcription = process_video(vid_file)
+def process_all_videos(verbose=True):
+    pbar = tqdm(sorted(os.listdir(SOURCE_PATH)))
+    for vid_file in pbar:
+        err_audio, err_slides, err_transcription = process_video(vid_file, pbar, verbose)

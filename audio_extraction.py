@@ -3,6 +3,7 @@ from tqdm.notebook import tqdm
 import librosa
 import soundfile as sf
 from record_graph_construction.utils import get_params
+import warnings
 
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
@@ -12,8 +13,10 @@ IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
 def vid_2_flac(vid_path, aud_path):
     # load the audio from the video, resample to 16kHz and write to an flac audiofile
-    data, samplerate = librosa.load(vid_path, sr=16000)
-    sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        data, samplerate = librosa.load(vid_path, sr=16000)
+        sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
 
 def extract_all_audios():
     err = []

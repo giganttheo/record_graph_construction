@@ -54,7 +54,6 @@ def compute_batch_hashes(vid_path):
       batch = jnp.array((vr.get_batch(ids).asnumpy()))
       batch = get_patches(batch) #batch of patches
       batch_h =  jax.vmap(imagehash_jax.batch_phash)(batch)
-      # print(batch_h.shape)
       for i in range(len(ids)):
         h = batch_h[i]
         if h_prev == None:
@@ -76,7 +75,7 @@ def stats_per_patch(hashes):
   ids = [h["frame_id"] for h in hashes]
   for patch in range(9):
     distance = [h["distance"][patch] for h in hashes]
-    print(f"Patch {patch}: min = {min(distance)}, max = {max(distance)}, median = {statistics.median(distance)}, mean = {statistics.mean(distance)}")
+    #print(f"Patch {patch}: min = {min(distance)}, max = {max(distance)}, median = {statistics.median(distance)}, mean = {statistics.mean(distance)}")
     
 
 def compute_threshold(hashes):
@@ -102,7 +101,8 @@ def compute_threshold(hashes):
     # number of frames should be < length of the video / 10 (1 frame per 40 second in average)
     # OR the median duration between two keyframes should be > 10 secs
     if len(durations) > 0:
-      print(f"Seuil: {threshold}; num kf = {len(durations)} / {(len(hashes) * DOWNSAMPLE / 24)} * ?, mean = {statistics.mean(durations)}, median = {statistics.median(durations)}")
+      pass
+      #print(f"Seuil: {threshold}; num kf = {len(durations)} / {(len(hashes) * DOWNSAMPLE / 24)} * ?, mean = {statistics.mean(durations)}, median = {statistics.median(durations)}")
     if len(durations) < (len(hashes) * DOWNSAMPLE / 24) / 40 or statistics.median(durations) > min_length :
       best = threshold
     else:
