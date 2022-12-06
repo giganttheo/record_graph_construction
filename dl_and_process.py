@@ -11,7 +11,9 @@ if __name__ == "__main__":
         dl_status = json.load(f)
     with open("./record_graph_construction/dl_status_local.json", "r") as f:
         dl_status_local = json.load(f)
-    for k in tqdm(dl_status.keys()):
+    print(f"DL status:")
+    for k in dl_status.keys():
+        print(k)
         if not dl_status[k] and not dl_status_local[k]:
             os.system(f"wget -O ./videos/ {k}")
             dl_status_local[k] = True
