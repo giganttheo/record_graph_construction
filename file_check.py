@@ -1,7 +1,7 @@
 import os
 from tqdm import tqdm
 import json
-from record_graph_construction.utils import get_params
+from utils import get_params
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
 SOURCE_PATH = extraction_params["source_path"]
