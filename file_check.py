@@ -22,7 +22,7 @@ if __name__ == "__main__":
     from datasets import load_dataset
     dataset = load_dataset("gigant/tib_complete_metadata")["train"]
     dl_status = {}
-    for i in tqdm(dataset):
+    for i in tqdm(range(len(dataset))):
         if check_license(dataset, i):
             url_vid = dataset[i]["url_vid"]
             dl_status[url_vid] = check_folder(url_vid.split("/")[-1], SOURCE_PATH)
