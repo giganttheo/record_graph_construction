@@ -1,7 +1,7 @@
 {
     "batch_size": 64,
     "downsampling": 12,
-    "source_path": "./videos",
-    "folder_path": "./results_1020",
-    "img_folder_path": "./results_1020/keyframes"
+    "source_path": "../videos",
+    "folder_path": "../results",
+    "img_folder_path": "../results/keyframes"
 }
