@@ -32,7 +32,7 @@ def process_video(vid_file, pbar, verbose=True):
         pbar.set_description("Extracting audio to flac file")
     aud_path = f'{FOLDER_PATH}/audio/{".".join(vid_file.split(".")[:-1])}.flac'
     if aud_path.split("/")[-1] not in os.listdir(f"{FOLDER_PATH}/audio/"):
-        print(aud_path.split("/")[-1])
+        #print(aud_path.split("/")[-1])
         try:
             vid_2_flac(vid_path, aud_path)
         except:
