@@ -15,7 +15,8 @@ def check_folder(file, folder):
     return os.path.isfile(file_path)
 
 def check_license(dataset, i_col):
-    return "CC Attribution" in dataset[i_col]["license"].split(":")[0]
+    license = dataset[i_col]["license"]
+    return license is not None and "CC Attribution" in license.split(":")[0]
 
 
 if __name__ == "__main__":
