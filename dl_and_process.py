@@ -2,8 +2,8 @@ from tqdm import tqdm
 import json
 import os
 
-from record_graph_construction.file_check import check_folder
-from record_graph_construction.process_video import process_video
+from file_check import check_folder
+from process_video import process_video
 
 
 if __name__ == "__main__":
