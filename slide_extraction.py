@@ -151,6 +151,7 @@ def extract_all_slides():
                     f.write(json.dumps(slideshow)) 
             except:
                 err_slides.append(vid_path)
+    return err_slides
 
 if __name__ == "__main__":
-    extract_all_slides()
+    print(extract_all_slides())
