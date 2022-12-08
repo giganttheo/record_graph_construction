@@ -134,10 +134,8 @@ def get_slides(vid_path, hashes, threshold):
     slideshow.append({"slide": path, "frames": (id_start, len(vr)-1), "timestamp":(float(vr.get_frame_timestamp(id_start)[0]), float(vr.get_frame_timestamp(len(vr)-1)[1]))})
     return slideshow
 
-
 def extract_all_slides():
     err_slides = []
-
     for vid_file in tqdm(os.listdir(SOURCE_PATH)):
         vid_path = f'{SOURCE_PATH}/{vid_file}'
         path = f'{FOLDER_PATH}/metadata/{".".join(vid_file.split(".")[:-1])}_slideshow.json'
