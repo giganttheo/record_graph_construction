@@ -11,13 +11,13 @@ FOLDER_PATH = extraction_params["folder_path"]
 IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
 def vid_2_flac(vid_path, aud_path):
-    # load the audio from the video, resample to 16kHz and write to an flac audiofile
-    # with warnings.catch_warnings():
-    #     warnings.simplefilter("ignore")
-    #     data, samplerate = librosa.load(vid_path, sr=16000)
-    #     sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
-    data, samplerate = librosa.load(vid_path, sr=16000)
-    sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
+    #load the audio from the video, resample to 16kHz and write to an flac audiofile
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        data, samplerate = librosa.load(vid_path, sr=16000)
+        sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
+    # data, samplerate = librosa.load(vid_path, sr=16000)
+    # sf.write(aud_path, data, 16000, format="flac", subtype='PCM_16')
 
 def extract_all_audios():
     err = []

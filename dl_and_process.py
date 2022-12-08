@@ -59,10 +59,10 @@ if __name__ == "__main__":
         print(k, end=" ... ")
         if not dl_status[k] and not dl_status_local[k]:
             os.system(f"wget -P ./videos/ {k}")
-            with open("./dl_status_local.json", "w") as f:
+            with open("./record_graph_construction/dl_status_local.json", "w") as f:
                 json.dump(dl_status_local, f)
             err_audio, err_slides, err_transcription = process_video(transcription_model, k.split("/")[-1])
-            if (len(*err_audio, *err_slides, *err_transcription)) > 0:
+            if (len([*err_audio, *err_slides, *err_transcription])) > 0:
                 print("error")
                 #print(err_audio, err_slides, err_transcription)
             else:
