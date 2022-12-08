@@ -26,7 +26,7 @@ def process_video(vid_file):
 
 if __name__ == "__main__":
     for vid_file in sorted(os.listdir(SOURCE_PATH)):
-        process_video(vid_file)
+        print(process_video(vid_file))
     # with open("./record_graph_construction/dl_status.json", "r") as f:
     #     dl_status = json.load(f)
     # with open("./record_graph_construction/dl_status_local.json", "r") as f:
