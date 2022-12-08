@@ -38,12 +38,12 @@ def process_video(vid_file):
             err_slides.append(vid_path)
     transc_path = f'{FOLDER_PATH}/transcripts/{".".join(vid_file.split(".")[:-1])}.json'
     if os.path.isfile(aud_path) and not os.path.isfile(transc_path):
-        try:
-            result = transcribe(aud_path)
-            with open(transc_path, "w") as f:
-                f.write(json.dumps(result))
-        except:
-            err_transcription.append(aud_path)
+        #try:
+        result = transcribe(aud_path)
+        with open(transc_path, "w") as f:
+            f.write(json.dumps(result))
+        # except:
+        #     err_transcription.append(aud_path)
     else:
         err_transcription.append(aud_path)
     return err_audio, err_slides, err_transcription
