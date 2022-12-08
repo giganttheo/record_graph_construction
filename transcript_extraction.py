@@ -12,9 +12,9 @@ FOLDER_PATH = extraction_params["folder_path"]
 model = whisper.load_model("small")
 
 def transcribe(audio):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        return model.transcribe(audio)
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore")
+    return model.transcribe(audio)
 
 def transcribe_all():
     err_transcription = []
