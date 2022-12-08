@@ -70,6 +70,8 @@ def process_all_videos(verbose=True):
     pbar = tqdm(sorted(os.listdir(SOURCE_PATH)))
     for vid_file in pbar:
         err_audio, err_slides, err_transcription = process_video(vid_file, pbar, verbose)
+        if verbose and (len(*err_audio, *err_slides, *err_transcription)) > 0:
+            print(err_audio, err_slides, err_transcription)
 
 if __name__ == "__main__":
     process_all_videos()
