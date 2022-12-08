@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import json
 import os
+import whisper
 
 from audio_extraction import vid_2_flac
 from slide_extraction import compute_batch_hashes, compute_threshold, get_slides
@@ -14,7 +15,7 @@ SOURCE_PATH = extraction_params["source_path"]
 FOLDER_PATH = extraction_params["folder_path"]
 IMG_FOLDER_PATH = extraction_params["img_folder_path"]
 
-def process_video(vid_file):
+def process_video(transcription_model, vid_file):
     err_audio = []
     err_slides = []
     err_transcription = []
@@ -39,7 +40,7 @@ def process_video(vid_file):
     transc_path = f'{FOLDER_PATH}/transcripts/{".".join(vid_file.split(".")[:-1])}.json'
     if os.path.isfile(aud_path) and not os.path.isfile(transc_path):
         #try:
-        result = transcribe(aud_path)
+        result = transcribe(transcription_model, aud_path)
         with open(transc_path, "w") as f:
             f.write(json.dumps(result))
         # except:
@@ -49,8 +50,9 @@ def process_video(vid_file):
     return err_audio, err_slides, err_transcription
 
 if __name__ == "__main__":
+    transcription_model = whisper.load_model("small")
     for vid_file in sorted(os.listdir(SOURCE_PATH)):
-        print(process_video(vid_file))
+        print(process_video(transcription_model, vid_file))
     # with open("./record_graph_construction/dl_status.json", "r") as f:
     #     dl_status = json.load(f)
     # with open("./record_graph_construction/dl_status_local.json", "r") as f:
