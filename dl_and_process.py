@@ -1,4 +1,4 @@
-from tqdm import tqdm
+import random
 import json
 import os
 import whisper
@@ -22,7 +22,6 @@ def process_video(transcription_model, vid_file):
     vid_path = f'{SOURCE_PATH}/{vid_file}'
     aud_path = f'{FOLDER_PATH}/audio/{".".join(vid_file.split(".")[:-1])}.flac'
     if aud_path.split("/")[-1] not in os.listdir(f"{FOLDER_PATH}/audio/"):
-        print(aud_path.split("/")[-1])
         try:
             vid_2_flac(vid_path, aud_path)
         except:
@@ -51,20 +50,21 @@ def process_video(transcription_model, vid_file):
 
 if __name__ == "__main__":
     transcription_model = whisper.load_model("small")
-    with open("./record_graph_construction/dl_status.json", "r") as f:
-        dl_status = json.load(f)
+    # with open("./record_graph_construction/dl_status.json", "r") as f:
+    #     dl_status = json.load(f)
     with open("./record_graph_construction/dl_status_local.json", "r") as f:
         dl_status_local = json.load(f)
-    for k in dl_status.keys():
+    for k in random.sample(dl_status_local.keys(), len(dl_status_local.keys())):
         print(k, end=" ... ")
-        if not dl_status[k] and not dl_status_local[k]:
+        if not dl_status_local[k]:
             os.system(f"wget -P ./videos/ {k}")
-            with open("./record_graph_construction/dl_status_local.json", "w") as f:
-                json.dump(dl_status_local, f)
             err_audio, err_slides, err_transcription = process_video(transcription_model, k.split("/")[-1])
             if (len([*err_audio, *err_slides, *err_transcription])) > 0:
                 print("error")
                 #print(err_audio, err_slides, err_transcription)
             else:
                 print("ok")
+            dl_status_local[k] = True
+            with open("./record_graph_construction/dl_status_local.json", "w") as f:
+                json.dump(dl_status_local, f)
             os.system(f"rm ./videos/{k.split('/')[-1]}")
