@@ -66,5 +66,5 @@ if __name__ == "__main__":
                 print("ok")
             dl_status_local[k] = True
             with open("./record_graph_construction/dl_status_local.json", "w") as f:
-                f.write(json.dumps(dl_status_local))
+                f.write(json.dump(dl_status_local))
             os.system(f"rm ./videos/{k.split('/')[-1]}")
