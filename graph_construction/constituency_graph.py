@@ -121,3 +121,5 @@ if __name__ == "__main__":
   graphs = construct_constituency_graph(docs)
   g = to_jraph(graphs[0])
   adj_mat = get_adjacency_matrix(g)
+  print(adj_mat)
+  print(g)
