@@ -3,7 +3,7 @@ import json
 import os
 import whisper
 
-from audio_extraction import vid_2_flac
+from feature_extraction.audio_extraction import vid_2_flac
 from slide_extraction import compute_batch_hashes, compute_threshold, get_slides
 from transcript_extraction import transcribe
 
