@@ -1,11 +1,20 @@
+import jraph
+import jax.numpy as jnp
 import spacy
+import gradio as gr
+import en_core_web_trf
+import numpy as np
+import re
 
-nlp = spacy.load("en_core_web_sm")
+nlp = en_core_web_trf.load()
 
 def dependency_parser(sentences):
   """
   sentences is a list of sentences from an input document
   """
+  return [nlp(sentence) for sentence in sentences]
+
+def dependency_parser(sentences):
   return [nlp(sentence) for sentence in sentences]
 
 def construct_dependency_graph(docs):
@@ -17,18 +26,51 @@ def construct_dependency_graph(docs):
     nodes = [token.text for token in doc]
     senders = []
     receivers = []
+    edge_labels = {}
     for token in doc:
         for child in token.children:
-            senders.append(token.i)
-            receivers.append(child.i)
-    graphs.append({"nodes": nodes, "senders": senders, "receivers": receivers})
+            senders.append(child.i)
+            receivers.append(token.i)
+            edge_labels[(token.i, child.i)] = child.dep_
+    graphs.append({"nodes": nodes, "senders": senders, "receivers": receivers, "edge_labels": edge_labels})
   return graphs
 
+def to_jraph(graph):
+  nodes = graph["nodes"]
+  s = graph["senders"]
+  r = graph["receivers"]
+
+  # Define a three node graph, each node has an integer as its feature.
+  node_features = jnp.array([0]*len(nodes))
+
+  # We will construct a graph for which there is a directed edge between each node
+  # and its successor. We define this with `senders` (source nodes) and `receivers`
+  # (destination nodes).
+  senders = jnp.array(s)
+  receivers = jnp.array(r)
+
+  # We then save the number of nodes and the number of edges.
+  # This information is used to make running GNNs over multiple graphs
+  # in a GraphsTuple possible.
+  n_node = jnp.array([len(nodes)])
+  n_edge = jnp.array([len(s)])
+
+
+  return jraph.GraphsTuple(nodes=node_features, senders=senders, receivers=receivers,
+  edges=None, n_node=n_node, n_edge=n_edge, globals=None)
+
+def get_adjacency_matrix(jraph_graph: jraph.GraphsTuple):
+  nodes, _, receivers, senders, _, _, _ = jraph_graph
+  adj_mat = jnp.zeros((len(nodes), len(nodes)))
+  for i in range(len(receivers)):
+    adj_mat = adj_mat.at[senders[i], receivers[i]].set(1)
+  return adj_mat
+
 if __name__ == "__main__":
-    # not tested
-    from datasets import load_dataset
-    dataset = load_dataset("gigant/tib_transcripts")
-    sentences = dataset["train"][42]["transcript"].split(".")
-    docs = dependency_parser(sentences)
-    graphs = construct_dependency_graph(docs)
-    print(graphs[0])
+  sentence="This is a test sentence."
+  docs = dependency_parser([sentence])
+  graphs = construct_dependency_graph(docs)
+  g = to_jraph(graphs[0])
+  adj_mat = get_adjacency_matrix(g)
+  print(adj_mat)
+  print(g)

@@ -109,7 +109,7 @@ def to_jraph(graph):
   edges=None, n_node=n_node, n_edge=n_edge, globals=None)
 
 def get_adjacency_matrix(jraph_graph: jraph.GraphsTuple):
-  nodes, edges, receivers, senders, _, _, _ = jraph_graph
+  nodes, _, receivers, senders, _, _, _ = jraph_graph
   adj_mat = jnp.zeros((len(nodes), len(nodes)))
   for i in range(len(receivers)):
     adj_mat = adj_mat.at[senders[i], receivers[i]].set(1)
