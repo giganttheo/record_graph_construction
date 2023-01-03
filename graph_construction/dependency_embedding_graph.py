@@ -5,9 +5,9 @@ import gradio as gr
 import en_core_web_trf
 import numpy as np
 import re
-from node_encoding.word_encoding import w2v_embedder
+from record_graph_construction.node_encoding.word_encoding import w2v_embedder
 from gensim.models import KeyedVectors
-from node_encoding.sentence_encoding import get_sentence_embeddings
+from record_graph_construction.node_encoding.sentence_encoding import get_sentence_embeddings
 
 w2v = KeyedVectors.load_word2vec_format('./models/custom_w2v_100d.txt')
 get_embedding = w2v_embedder(w2v)
