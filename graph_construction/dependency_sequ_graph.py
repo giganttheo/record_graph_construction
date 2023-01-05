@@ -27,11 +27,15 @@ def construct_both_graph(docs):
     nodes.append("Sentence")
     senders = [token.i for token in doc][:-1]
     senders.extend([token.i for token in doc][1:])
+    senders.extend([token.i for token in doc]])
     receivers = [token.i for token in doc][1:]
     receivers.extend([token.i for token in doc][:-1])
+    receivers.extend([token.i for token in doc]])
     edge_labels = {(token.i, token.i + 1): "next" for token in doc[:-1]}
     for token in doc[:-1]:
         edge_labels[(token.i + 1, token.i)] = "previous"
+    for token in doc:
+        edge_labels[(token.i, token.i)] = "self"
     for node in range(len(nodes) - 1):
       senders.append(node)
       receivers.append(len(nodes) - 1)
