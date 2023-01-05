@@ -27,10 +27,10 @@ def construct_both_graph(docs):
     nodes.append("Sentence")
     senders = [token.i for token in doc][:-1]
     senders.extend([token.i for token in doc][1:])
-    senders.extend([token.i for token in doc]])
+    senders.extend([token.i for token in doc])
     receivers = [token.i for token in doc][1:]
     receivers.extend([token.i for token in doc][:-1])
-    receivers.extend([token.i for token in doc]])
+    receivers.extend([token.i for token in doc])
     edge_labels = {(token.i, token.i + 1): "next" for token in doc[:-1]}
     for token in doc[:-1]:
         edge_labels[(token.i + 1, token.i)] = "previous"
@@ -47,6 +47,29 @@ def construct_both_graph(docs):
             edge_labels[(token.i, child.i)] = child.dep_
     graphs.append({"nodes": nodes, "senders": senders, "receivers": receivers, "edge_labels": edge_labels})
   return graphs
+
+def doc_graph(docs):
+  nodes = []
+  senders = []
+  receivers = []
+  edge_labels = {}
+  graphs = construct_both_graph(docs)
+  offset = 0
+  sentences_ids = []
+  for graph in graphs:
+    nodes.extend(graph["nodes"])
+    senders.extend([offset + s for s in graph["senders"]])
+    receivers.extend([offset + r for r in graph["receivers"]])
+    for (s, r) in graph["edge_labels"].keys():
+      edge_labels[(s+offset, r+offset)] = graph["edge_labels"]
+    offset += len(graph["nodes"])
+    sentences_ids.append(offset)
+  #bag of sentences?
+  for s1 in sentences_ids:
+    for s2 in sentences_ids:
+      senders.extend(s1)
+      receivers.extend(s2)
+  return {"nodes": nodes, "senders": senders, "receivers": receivers, "edge_labels": edge_labels}
 
 def to_jraph(graph):
   nodes = graph["nodes"]
