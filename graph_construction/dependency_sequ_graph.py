@@ -67,8 +67,8 @@ def doc_graph(docs):
   #bag of sentences?
   for s1 in sentences_ids:
     for s2 in sentences_ids:
-      senders.extend(s1)
-      receivers.extend(s2)
+      senders.append(s1)
+      receivers.append(s2)
   return {"nodes": nodes, "senders": senders, "receivers": receivers, "edge_labels": edge_labels}
 
 def to_jraph(graph):
