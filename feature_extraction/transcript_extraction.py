@@ -1,5 +1,5 @@
 import whisper
-from utils import get_params
+from feature_extraction.utils import get_params
 import warnings
 import os
 import json

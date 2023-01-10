@@ -8,7 +8,7 @@ from slide_extraction import compute_batch_hashes, compute_threshold, get_slides
 from transcript_extraction import transcribe
 
 #from process_video import process_video
-from utils import get_params
+from feature_extraction.utils import get_params
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
 SOURCE_PATH = extraction_params["source_path"]

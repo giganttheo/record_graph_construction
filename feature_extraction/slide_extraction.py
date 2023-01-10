@@ -12,7 +12,7 @@ import jax
 import os
 import json
 from tqdm import tqdm
-from utils import get_params
+from feature_extraction.utils import get_params
 
 extraction_params = get_params("./record_graph_construction/extraction_params.json")
 BATCH_SIZE = extraction_params["batch_size"]

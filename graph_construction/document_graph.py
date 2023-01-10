@@ -1,6 +1,6 @@
-from .utils import split_sentences
-from .dependency_graph import dependency_parser
-from .dependency_sequ_graph import construct_both_graph, to_jraph, get_adjacency_matrix
+from graph_construction.utils import split_sentences
+from graph_construction.dependency_graph import dependency_parser
+from graph_construction.dependency_sequ_graph import construct_both_graph, to_jraph, get_adjacency_matrix
 
 def doc_graph(docs):
   nodes = []
