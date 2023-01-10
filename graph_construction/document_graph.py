@@ -1,5 +1,4 @@
-from gensim.summarization.textcleaner import split_sentences
-
+from .utils import split_sentences
 from .dependency_graph import dependency_parser
 from .dependency_sequ_graph import construct_both_graph, to_jraph, get_adjacency_matrix
 
