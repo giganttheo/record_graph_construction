@@ -79,16 +79,18 @@ def stats_per_patch(hashes):
     
 
 def compute_threshold(hashes):
-  min_length = 24 * 28
+  min_length = 24 * 28 #the threshold should be such that lower median duration in frames of a keyframe is > min_length (28sec here)
   ids = [h["frame_id"] for h in hashes]
   distances_ = [[h["distance"][patch] for h in hashes] for patch in range(9)]
   means = [statistics.mean(distance) for distance in distances_]
   if np.count_nonzero([m > 1 for m in means]) <= 5:
+    #ignoring the patches with too much change between frames (probably the camera)
     ignore = [m > 1 for m in means]
   else:
+    #except if most of the patches are changing a lot
     ignore = [False]*9
-  thrs_ = sorted(list(set([d for distances in distances_ for d in distances])),reverse=True)
-  best = thrs_[0] - 1
+  thrs_ = sorted(list(set([d for distances in distances_ for d in distances])),reverse=True) 
+  best = thrs_[0] - 1 #default best threshold
   for threshold in thrs_[1:-1]:
     durations = []
     i_start=0
@@ -99,7 +101,7 @@ def compute_threshold(hashes):
           durations.append(hashes[i-1]["frame_id"] - hashes[i_start]["frame_id"])
           i_start=i
     # number of frames should be < length of the video / 10 (1 frame per 40 second in average)
-    # OR the median duration between two keyframes should be > 10 secs
+    # OR the median duration between two keyframes should be > min_length
     if len(durations) > 0:
       pass
       #print(f"Seuil: {threshold}; num kf = {len(durations)} / {(len(hashes) * DOWNSAMPLE / 24)} * ?, mean = {statistics.mean(durations)}, median = {statistics.median(durations)}")
@@ -110,7 +112,7 @@ def compute_threshold(hashes):
   return best
 
 def get_slides(vid_path, hashes, threshold):
-    min_length = 24 * 1.5
+    min_length = 24 * 1.5 #minimum duration of a slide (1.5 seconds)
     vr = VideoReader(vid_path, ctx=cpu(0))
     slideshow = []
     i_start = 0
@@ -122,10 +124,10 @@ def get_slides(vid_path, hashes, threshold):
     else:
         ignore = [False]*9
     for i, h in enumerate(hashes):
-        cond = np.any([h["distance"][i] > threshold and not ignore[i] for i in range(9)])
-        if cond and hashes[i-1]["frame_id"] - hashes[i_start]["frame_id"] >= min_length:
-            path=f'{IMG_FOLDER_PATH}/{vid_path.split("/")[-1].split(".")[0]}_{id_start}_{h["frame_id"]-1}.png'
-            Image.fromarray(vr[hashes[i-1]["frame_id"]].asnumpy()).save(path)
+        cond = np.any([h["distance"][i] > threshold and not ignore[i] for i in range(9)]) #if the distance between any patch of this frame and the previous one is more than the threshold
+        if cond and hashes[i-1]["frame_id"] - hashes[i_start]["frame_id"] >= min_length: #and if the previous frame lasted more than the minimum length of a frame
+            path=f'{IMG_FOLDER_PATH}/{vid_path.split("/")[-1].split(".")[0]}_{id_start}_{h["frame_id"]-1}.png' #we keep the slide
+            Image.fromarray(vr[hashes[i-1]["frame_id"]].asnumpy()).save(path) #we are keeping the second to last image before the change is detected
             slideshow.append({"slide": path, "frames": (id_start, h["frame_id"]-1), "timestamp": (float(vr.get_frame_timestamp(id_start)[0]), float(vr.get_frame_timestamp(h["frame_id"])[0]))})
             id_start=h["frame_id"]
             i_start=i
